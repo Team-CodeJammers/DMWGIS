@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace DMWGIS.API.Models
 {
+    [BsonIgnoreExtraElements]
     public class UserNotification
     {
-        //       "alertid" : "123456",
-        //"userid" : "9995401111",
-        //"latitude" : "10.0159",
-        //"longitude" : "76.3419",
-        //"city" : "Kochi",
-        //"event" : "flood",
-        //"type" : "medical",
-        //"status" : "active",
-        //"createtime" : "26-04-2020 18:35:00"
         public string alertid { get; set; }
         public string userid { get; set; }
         public string latitude { get; set; }
@@ -25,6 +14,5 @@ namespace DMWGIS.API.Models
         public string type { get; set; }
         public string status { get; set; }
         public string createtime { get; set; }
-
     }
 }

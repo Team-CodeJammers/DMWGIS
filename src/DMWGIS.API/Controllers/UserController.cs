@@ -1,46 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using DMWGIS.API.Adapter.Interface;
+using DMWGIS.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DMWGIS.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        // GET: api/User
+        private readonly IGetUserDataAdapter _getUserDataAdapter;
+        public UserController(IGetUserDataAdapter getUserDataAdapter)
+        {
+            _getUserDataAdapter = getUserDataAdapter;
+        }
+        // GET: User
         [HttpGet("city",Name = "City")]
-        public IEnumerable<string> city()
+        public IActionResult GetCityList()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(_getUserDataAdapter.GetCities());
         }
 
-        // GET: api/User/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        // GET: User
+        [HttpGet("type", Name = "Type")]
+        public IActionResult GetTypeList()
         {
-            return "value";
+            return Ok(_getUserDataAdapter.GetTypes());
         }
 
-        // POST: api/User
+        // GET: User
+        [HttpGet("Alerts/{userid}", Name = "Get")]
+        public IActionResult GetNotificationList(string userid)
+        {
+            return Ok(_getUserDataAdapter.GetUserNotifications(userid));
+        }
+
+        // POST: User
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(UserNotification addAlert)
         {
-        }
-
-        // PUT: api/User/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            try
+            {
+                _getUserDataAdapter.AddAlert(addAlert);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }
